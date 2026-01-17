@@ -47,7 +47,7 @@ Dockerおよびcomposeを行うための環境を準備します。以下の環�
 
 下記コマンドで本リポジトリの内容をチェックアウトします。
 ``` sh
-git clone http://github.com/h1data/weblate-check-textlint
+$ git clone http://github.com/h1data/weblate-check-textlint
 ```
 
 フォルダー構成を以下に示します。
@@ -86,7 +86,7 @@ TEXTLINTRC_PATH=/app/textlint
 ```
 
 - `TEXTLINT_HOST`: textlintサーバーのホスト名を指定します。（既定値: textlint）<br>
-基本的に[docker-compose.yml](333-docker-composeyml)で指定するtextlintサーバーのサービス名になります。
+基本的に[docker-compose.yml](#333-docker-composeyml)で指定するtextlintサーバーのサービス名になります。
 - `TEXTLINT_PORT`: textlintサーバーのポート番号を指定します。（既定値: 3000）
 - `TEXTLINT_PATH`: textlintサーバーのURLパスを指定します。（既定値: /lint）
 - `TEXTLINT_LANGS`: チェック対象の言語コードをカンマ区切りで指定します。（既定値: ja）
@@ -116,7 +116,7 @@ textlint用の設定ファイルです。もし日本語以外のチェックを
 >ルールセットを追加する場合は、textlint-server\package.jsonの更新とコンテナの再ビルドが必要です。
 
 #### 3.3.3. docker-compose.yml
-[https://github.com/WeblateOrg/docker-compose](https://github.com/WeblateOrg/docker-compose)のdocker-compose.ymlを元に、単一のWeblate、textlintサーバーが同一ネットワーク上で動作するよう構成しています。
+[Docker compose for Weblate](https://github.com/WeblateOrg/docker-compose)のdocker-compose.ymlを元に、単一のWeblate、textlintサーバーが同一ネットワーク上で動作するよう構成しています。
 他の設定ファイルに合わせた記載となっていますが、内容を変更する場合にはWeblateドキュメントの[Docker を使用したインストール](https://docs.weblate.org/ja/latest/admin/install/docker.html)を参照してください。
 
 #### 3.3.4 docker-compose.override.yml
@@ -125,7 +125,7 @@ textlint用の設定ファイルです。もし日本語以外のチェックを
 ### 3.4. コンテナの構成・起動
 docker-compose.ymlがあるフォルダーで下記コマンドを実行し、コンテナ群を構成、起動します。
 ``` sh
-$ docker compose --build up
+$ docker compose up --build -d
 ```
 起動完了後、`http://localhost:(docker-compose.override.ymlで指定したポート)`でWeblateの画面にアクセスできます。
 
@@ -143,7 +143,7 @@ textlintによるチェックを行いたいWeblateのプロジェクトもし�
 
 ## 4. 補足: textlintサーバー通信仕様
 ### 4.1. サーバーURL
-[環境変数](331-envirionment)で指定したホスト名、ポート番号、およびパスを元にしたURL（本リポジトリの既定では`http://textlint:3000/lint`）で受け付けます。
+[環境変数](#331-envirionment)で指定したホスト名、ポート番号、およびパスを元にしたURL（本リポジトリの既定では`http://textlint:3000/lint`）で受け付けます。
 ### 4.2. チェック要求内容
 POST方式でHTTPリクエストボディに翻訳文と言語コードをjsonで指定します。
 ```
@@ -174,21 +174,23 @@ POST方式でHTTPリクエストボディに翻訳文と言語コードをjson�
 ```
 チェックエラーを検出した場合、独自チェックはチェック応答内容からmessageとruleIdをエラー内容の表示に使用します。
 ```
-【dict2】 "する事ができます"は冗長な表現です。"する事が"を省き簡潔な表現にすると文章が明瞭になります。
+【dict2】 "することができます"は冗長な表現です。"することが"を省き簡潔な表現にすると文章が明瞭になります。
 解説: https://github.com/textlint-ja/textlint-rule-ja-no-redundant-expression#dict2 (ja-technical-writing/ja-no-redundant-expression)
 ```
 実行時エラーが発生した場合はHTTP 500を返し、エラー内容をtextlintサーバーの標準出力に出力します。
 
 ## 5. 参考資料
-- Weblateドキュメント
+- Weblate
   - [独自の検査項目の作成](https://docs.weblate.org/ja/latest/admin/checks.html#own-checks)
   - [Weblate のカスタマイズ](https://docs.weblate.org/ja/latest/admin/customize.html)
   - [Docker を使用したインストール](https://docs.weblate.org/ja/latest/admin/install/docker.html)
   - [管理コマンド](https://docs.weblate.org/ja/latest/admin/management.html)
-  - [ソース](https://github.com/WeblateOrg/weblate)
+  - [Weblateソース](https://github.com/WeblateOrg/weblate)
+  - [Docker compose for Weblate](https://github.com/WeblateOrg/docker-compose)
 - Docker
   - [Dockerfile リファレンス](https://docs.docker.jp/engine/reference/builder.html)
   - [Compose ファイル リファレンス](https://docs.docker.jp/reference/compose-file/toc.html)
 - textlint
   - [JTF日本語標準スタイルガイド（翻訳用）ルールセット](https://github.com/textlint-ja/textlint-rule-preset-JTF-style)
   - [技術文書向けのtextlintルールプリセット](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing)
+
