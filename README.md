@@ -194,3 +194,4 @@ POST方式でHTTPリクエストボディに翻訳文と言語コードをjson�
   - [JTF日本語標準スタイルガイド（翻訳用）ルールセット](https://github.com/textlint-ja/textlint-rule-preset-JTF-style)
   - [技術文書向けのtextlintルールプリセット](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing)
 
+- 補足：[Weblate独自チェック開発者向け情報](DEVELOPMENT.md)
