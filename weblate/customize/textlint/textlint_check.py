@@ -39,7 +39,7 @@ class TextlintCheck(TargetCheck):
             for t in targets:
                 msgs = self.textlintClient.lint_text(t or "", unit.translation.language.code).get("messages", [])
                 for m in msgs:
-                    summary = render_markdown(f"{m.get("message", "")}（{m.get("ruleId", "")}）")
+                    summary = render_markdown(f"{m.get("message", "")} ({m.get("ruleId", "")})")
                     if summary and summary not in summaries:
                         summaries.append(summary)
 
