@@ -1,14 +1,15 @@
-# customize/textlint_check.py
-
+from django.utils.html import escape, format_html, format_html_join
+from django.utils.translation import gettext, gettext_lazy
 from weblate.checks.base import TargetCheck
+
 from customize.textlint.textlint_client import TextlintClient
 
 class TextlintCheck(TargetCheck):
     """ check for a translation unit with textlint """
     default_disabled = True
     check_id = "check_textlint"
-    name = "Textlintチェック違反"
-    description = "詳細はコメントを参照してください"
+    name = "textlintチェック違反"
+    description = "textlintチェックエラーがあります"
 
     textlintClient = TextlintClient()
     
@@ -20,58 +21,36 @@ class TextlintCheck(TargetCheck):
     
         try:
             messages = self.textlintClient.lint_text(target or "", unit.translation.language.code)["messages"]
-
-            existed_comments = unit.unresolved_comments
-            if not messages or len(messages) == 0:
-                for c in existed_comments:
-                    try:
-                        if c.user.is_bot and c.user.username == "check:textlint":
-                            c.resolved = True
-                            c.save(update_fields=["resolved"])
-                    except Exception:
-                        # ignore per-comment errors
-                        pass
-                return False
-            
-            # deferred importing ORM class
-            from weblate.auth.models import User
-            from weblate.trans.models import Comment
-
-            new_comments = []
-
-            for m in messages:
-                summary = f"{m['message']} ({m['ruleId']})"
-                if not summary in new_comments:
-                    new_comments.append(summary)
-                    if not self.__has_comment(summary, existed_comments):
-                        # add comment if there is no equivalent comment
-                        Comment.objects.create(
-                            comment = summary,
-                            user = User.objects.get_or_create_bot(
-                                scope="check",
-                                name="textlint",
-                                verbose="texlint check",
-                            ),
-                            unit = unit
-                        )
-        
-            for c in existed_comments:
-                if c.user.is_bot and c.user.username == "check:textlint" and not c.comment in new_comments:
-                    try:
-                        c.resolved = True
-                        c.save(update_fields=["resolved"])
-                    except Exception:
-                        # ignore per-comment errors
-                        pass
-            return True
-
+            return not (not messages or len(messages) == 0)
         except Exception as e:
             # do nothing for exceptions
             print(f'TextlintCheck ERROR! {e}')
             return False
 
-    def __has_comment(self, text: str, comments: list) -> bool:
-        for c in comments:
-            if c.comment == text:
-                return True
-        return False
+    def get_description(self, check_obj):
+        unit = check_obj.unit
+        # Collect target plural forms and run textlint on each
+        targets = unit.get_target_plurals()
+
+        summaries = []
+        try:
+            from weblate.utils.markdown import render_markdown
+
+            for t in targets:
+                msgs = self.textlintClient.lint_text(t or "", unit.translation.language.code).get("messages", [])
+                for m in msgs:
+                    summary = render_markdown(f"{m.get("message", "")}（{m.get("ruleId", "")}）")
+                    if summary and summary not in summaries:
+                        summaries.append(summary)
+
+        except Exception as e:
+            # If textlint fails here, return a generic message
+            print(f'TextlintCheck ERROR! {e}')
+            return format_html(escape("textlintとの連携に失敗しました"))
+
+        if not summaries:
+            return super().get_description(check_obj)
+
+        # Build an unordered list of unique summaries
+        list_items = format_html_join("\n", "<li>{}</li>", ((s,) for s in summaries))
+        return format_html("<ul>{}</ul>", list_items)

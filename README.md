@@ -1,7 +1,7 @@
 # textlintチェック for Weblate
 
 [Weblate](https://weblate.org/)でtextlintと連携し翻訳文のチェックを行う独自チェックです。<br>
-[JTF日本語標準スタイルガイド（翻訳用）ルールセット](https://github.com/textlint-ja/textlint-rule-preset-JTF-style)および[技術文書向けのtextlintルールプリセット](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing)を用いた翻訳文のチェックを行い、検出したエラーごとにコメントを自動で追加します。
+[JTF日本語標準スタイルガイド（翻訳用）ルールセット](https://github.com/textlint-ja/textlint-rule-preset-JTF-style)および[技術文書向けのtextlintルールプリセット](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing)を用いた翻訳文のチェックを行います。
 
 ![チェックエラー表示例](img/example.png)
 
@@ -170,7 +170,7 @@ POST方式でHTTPリクエストボディに翻訳文と言語コードをjson�
   "filePath":"input.md"
 }
 ```
-チェックエラーを検出した場合、独自チェックはチェック応答内容から「message (ruleId)」と編集した文字列を自動コメントとして登録します。
+チェックエラーを検出した場合、独自チェックはチェック応答内容からmessageとruleIdをエラー内容の表示に使用します。
 ```
 【dict2】 "する事ができます"は冗長な表現です。"する事が"を省き簡潔な表現にすると文章が明瞭になります。
 解説: https://github.com/textlint-ja/textlint-rule-ja-no-redundant-expression#dict2 (ja-technical-writing/ja-no-redundant-expression)
