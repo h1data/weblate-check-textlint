@@ -133,6 +133,8 @@ $ docker compose --build up
 
 textlintによるチェックを行いたいWeblateのプロジェクトもしくはコンポーネントに翻訳フラグ`check-textlint`を設定してください。
 
+![翻訳フラグ設定例](img/translation-flags.png)
+
 >【ヒント】設定済みの翻訳フラグがある場合は、カンマつなぎで追加します。例：`check-glossary,check-textlint`
 >【ヒント】独自チェックの有効化やチェックルール変更後に既存の翻訳をすべて再チェックする場合は、Weblateコンテナ内のコンソールで下記コマンドを実行します。
 > ``` sh
