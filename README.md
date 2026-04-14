@@ -111,9 +111,10 @@ textlint用の設定ファイルです。もし日本語以外のチェックを
 - [技術文書向けのtextlintルールプリセット：文末の句点記号として「。」を使います (ja-no-mixed-period)](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing?tab=readme-ov-file#%E6%96%87%E6%9C%AB%E3%81%AE%E5%8F%A5%E7%82%B9%E8%A8%98%E5%8F%B7%E3%81%A8%E3%81%97%E3%81%A6%E3%82%92%E4%BD%BF%E3%81%84%E3%81%BE%E3%81%99)
 - [技術文書向けのtextlintルールプリセット：感嘆符!！、疑問符?？を使用しない (no-exclamation-question-mark)](https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing?tab=readme-ov-file#%E6%84%9F%E5%98%86%E7%AC%A6%E7%96%91%E5%95%8F%E7%AC%A6%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%AA%E3%81%84)
 
->【ヒント】本設定ファイルはtextlintサーバー（コンテナ）からホストのtextlint-server\textlint\ フォルダーの内容を直接参照します。
->ホスト側の設定ファイルを変更した場合、次回のチェックから反映されます。<br>
->ルールセットを追加する場合は、textlint-server\package.jsonの更新とコンテナの再ビルドが必要です。
+> [!NOTE]
+> 本設定ファイルはtextlintサーバー（コンテナ）からホストのtextlint-server\textlint\ フォルダーの内容を直接参照します。<br>
+> ホスト側の設定ファイルを変更した場合、次回のチェックから反映されます。
+> ルールセットを追加する場合は、textlint-server\package.jsonの更新とコンテナの再ビルドが必要です。
 
 #### 3.3.3. docker-compose.yml
 [Docker compose for Weblate](https://github.com/WeblateOrg/docker-compose)のdocker-compose.ymlを元に、単一のWeblate、textlintサーバーが同一ネットワーク上で動作するよう構成しています。
@@ -132,11 +133,13 @@ $ docker compose up --build -d
 ### 3.5. 翻訳フラグの設定
 
 textlintによるチェックを行いたいWeblateのプロジェクトもしくはコンポーネントに翻訳フラグ`check-textlint`を設定してください。
->【ヒント】設定済みの翻訳フラグがある場合は、カンマつなぎで追加します。例：`check-glossary,check-textlint`
+> [!NOTE]
+> 設定済みの翻訳フラグがある場合は、カンマつなぎで追加します。例：`check-glossary,check-textlint`
 
 ![翻訳フラグ設定例](img/translation-flags.png)
 
->【ヒント】独自チェックの有効化やチェックルール変更後に既存の翻訳をすべて再チェックする場合は、Weblateコンテナ内のコンソールで下記コマンドを実行します。
+> [!TIP]
+> 独自チェックの有効化やチェックルール変更後に既存の翻訳をすべて再チェックする場合は、Weblateコンテナ内のコンソールで下記コマンドを実行します。
 > ``` sh
 > $ weblate updatechecks --all
 > ```
