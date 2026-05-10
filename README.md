@@ -41,7 +41,7 @@ Weblateの独自チェックとtextlintは、WeblateサーバーとNode.js（Exp
 Dockerおよびcomposeを行うための環境を準備します。以下の環境でのみ動作確認を行っています。
 - [Podman Desktop](https://podman-desktop.io/) 1.24.2 + Compose extension
 - Podman 5.7.1（Podman Desktopに同梱）
-- Weblate 5.15.2（Dockerfileでバージョンを指定したイメージを取得）
+- Weblate 5.17.1（Dockerfileでバージョンを指定したイメージを取得）
 
 ### 3.2. リポジトリの取得
 
