@@ -1,4 +1,4 @@
-FROM weblate/weblate:5.15.2.0
+FROM weblate/weblate:5.17.1.0
 
 USER 1000
 
