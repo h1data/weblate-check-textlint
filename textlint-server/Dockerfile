@@ -1,4 +1,4 @@
-FROM node:24-slim
+FROM node:24
 
 WORKDIR /app
 ENV TEXTLINT_PORT=3000

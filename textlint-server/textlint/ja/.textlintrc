@@ -4,6 +4,9 @@
             "ja-no-mixed-period": false,
             "no-exclamation-question-mark": false
         },
-        "preset-jtf-style": true
+        "preset-jtf-style": true,
+        "prh": {
+            "rulePaths": ["/app/node_modules/textlint-rule-preset-icsmedia/dict/prh.yml"]
+        }
     }
 }

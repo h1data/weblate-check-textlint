@@ -6,6 +6,8 @@
     "textlint": "^15.5.0",
     "textlint-rule-preset-jtf-style": "^3.0.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
-    "@textlint/config-loader": "^15.5.0"
+    "@textlint/config-loader": "^15.5.0",
+    "textlint-rule-prh": "^6.1.0",
+    "textlint-rule-preset-icsmedia": "github:ics-creative/textlint-rule-preset-icsmedia"
   }
 }
