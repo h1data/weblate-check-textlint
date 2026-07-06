@@ -20,11 +20,13 @@ class TextlintCheck(TargetCheck):
         """
     
         try:
-            messages = self.textlintClient.lint_text(target or "", unit.translation.language.code)["messages"]
+            result = self.textlintClient.lint_text(target or "", unit.translation.language.code)
+            if result == None: return False
+            messages = result.get("messages", [])
             return not (not messages or len(messages) == 0)
         except Exception as e:
             # do nothing for exceptions
-            print(f'TextlintCheck ERROR! {e}')
+            print(f'TextlintCheck ERROR! {e.with_traceback()}')
             return False
 
     def get_description(self, check_obj):
@@ -37,7 +39,9 @@ class TextlintCheck(TargetCheck):
             from weblate.utils.markdown import render_markdown
 
             for t in targets:
-                msgs = self.textlintClient.lint_text(t or "", unit.translation.language.code).get("messages", [])
+                result = self.textlintClient.lint_text(t or "", unit.translation.language.code)
+                if result == None : return False
+                msgs = result.get("messages", [])
                 for m in msgs:
                     summary = render_markdown(f"{m.get("message", "")} ({m.get("ruleId", "")})")
                     if summary and summary not in summaries:
@@ -45,7 +49,7 @@ class TextlintCheck(TargetCheck):
 
         except Exception as e:
             # If textlint fails here, return a generic message
-            print(f'TextlintCheck ERROR! {e}')
+            print(f'TextlintCheck ERROR! {e.with_traceback()}')
             return format_html(escape("textlintとの連携に失敗しました"))
 
         if not summaries:

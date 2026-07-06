@@ -20,7 +20,9 @@ app.post(process.env.TEXTLINT_PATH || "/lint", async (req, res) => {
 
     const configPath = CONFIGURATIONS.get(lang);
     if (!configPath) {
-      return res.json([""]);
+      console.warn(`[textlint-server] no .textlintrc for language code "${lang}"`);
+      res.json({'messages': [], 'filePath': 'input.md'});
+      return;
     }
 
     // SECURITY: prevent directory traversal
