@@ -1,4 +1,4 @@
-FROM weblate/weblate:2026.6.1.0
+FROM weblate/weblate:2026.8.0.0
 
 USER 1000
 
